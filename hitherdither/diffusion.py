@@ -189,5 +189,5 @@ def error_diffusion_dithering(image, palette, method="floyd-steinberg", order=2)
             for dx, dy, diffusion_coefficient in diff_map:
                 xn, yn = x + dx, y + dy
                 if (0 <= xn < ni.shape[1]) and (0 <= yn < ni.shape[0]):
-                    ni[yn, xn] += quantization_error * diffusion_coefficient
+                    ni[yn, xn] += np.round(quantization_error * diffusion_coefficient)
     return palette.create_PIL_png_from_rgb_array(np.array(ni, "uint8"))
