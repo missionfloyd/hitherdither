@@ -122,23 +122,16 @@ class Palette(object):
     def render(self, colours):
         return np.array(np.take(self.colours, colours, axis=0), "uint8")
 
-    def image_distance(self, image, order=2):
+    def image_closest_colour(self, image, order=2):
         ni = np.array(image, "float")
         distances = np.zeros((ni.shape[0], ni.shape[1], len(self)), "float")
         for i, colour in enumerate(self):
             distances[:, :, i] = np.linalg.norm(ni - colour, ord=order, axis=2)
-        return distances
-
-    def image_closest_colour(self, image, order=2):
-        return np.argmin(self.image_distance(image, order=order), axis=2)
-
-    def pixel_distance(self, pixel, order=2):
-        return np.array([np.linalg.norm(pixel - colour, ord=order) for colour in self])
+        return np.argmin(distances, axis=2)
 
     def pixel_closest_colour(self, pixel, order=2):
-        return self.colours[
-            np.argmin(self.pixel_distance(pixel, order=order)), :
-        ].copy()
+        distance = np.array([np.linalg.norm(pixel - colour, ord=order) for colour in self])
+        return self.colours[np.argmin(distance), :].copy()
 
     @classmethod
     def create_by_kmeans(cls, image):
@@ -203,15 +196,10 @@ class Palette(object):
         :return: A :class:`PIL.Image.Image` image of mode ``P``.
 
         """
-        pa_image = Image.new("P", cc.shape[::-1])
+        pa_image = Image.new("P", (1, 1))
         pa_image.putpalette(self.colours.flatten().tolist())
-        im = Image.fromarray(np.array(cc, "uint8")).im.convert("P", 0, pa_image.im)
-        try:
-            # Pillow >= 4
-            return pa_image._new(im)
-        except AttributeError:
-            # Pillow < 4
-            return pa_image._makeself(im)
+        im = Image.fromarray(np.array(cc, "uint8")).quantize(palette=pa_image, dither=Image)
+        return im
 
     def create_PIL_png_from_rgb_array(self, img_array):
         """Create a ``P`` PIL image from a RGB image with this palette.
@@ -227,15 +215,10 @@ class Palette(object):
 
         """
         cc = self.image_closest_colour(img_array, order=2)
-        pa_image = Image.new("P", cc.shape[::-1])
+        pa_image = Image.new("P", (1, 1))
         pa_image.putpalette(self.colours.flatten().tolist())
-        im = Image.fromarray(np.array(cc, "uint8")).im.convert("P", 0, pa_image.im)
-        try:
-            # Pillow >= 4
-            return pa_image._new(im)
-        except AttributeError:
-            # Pillow < 4
-            return pa_image._makeself(im)
+        im = Image.fromarray(np.array(cc, "uint8")).quantize(palette=pa_image, dither=Image.NONE)
+        return im
 
     @staticmethod
     def hex2rgb(x):
