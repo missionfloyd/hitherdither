@@ -198,7 +198,7 @@ class Palette(object):
         """
         pa_image = Image.new("P", (1, 1))
         pa_image.putpalette(self.colours.flatten().tolist())
-        im = Image.fromarray(np.array(cc, "uint8")).quantize(palette=pa_image, dither=Image)
+        im = Image.fromarray(np.array(cc, "uint8")).quantize(palette=pa_image, dither=Image.NONE)
         return im
 
     def create_PIL_png_from_rgb_array(self, img_array):
