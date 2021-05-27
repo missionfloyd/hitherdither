@@ -224,17 +224,17 @@ def error_diffusion_dithering(image, palette, method="floyd-steinberg", order=2)
 
     """
     ni = np.array(image, "float")
-
+    width, height = image.size
     diff_map = _DIFFUSION_MAPS[method.lower()]
 
-    for y in range(ni.shape[0]):
-        for x in range(ni.shape[1]):
+    for y in range(height):
+        for x in range(width):
             old_pixel = ni[y, x]
             new_pixel = palette.pixel_closest_colour(old_pixel, order)
             quantization_error = old_pixel - new_pixel
             ni[y, x] = new_pixel
             for dx, dy, diffusion_coefficient in diff_map:
                 xn, yn = x + dx, y + dy
-                if (0 <= xn < ni.shape[1]) and (0 <= yn < ni.shape[0]):
+                if (0 <= xn < width) and (0 <= yn < height):
                     ni[yn, xn] += np.round(quantization_error * diffusion_coefficient)
     return palette.create_PIL_png_from_rgb_array(ni)
