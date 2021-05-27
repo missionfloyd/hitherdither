@@ -15,13 +15,12 @@ from __future__ import absolute_import
 
 import numpy as np
 
-
 def B(n, transposed=False):
     """Get the Bayer matrix with side of length ``n``.
 
     Will only work if ``n`` is a power of 2.
 
-    Reference: http://caca.zoy.org/study/part2.html
+    Reference: http://caca.zoy.org/wiki/libcaca/study/2
 
     :param int n: Power of 2 side length of matrix.
     :return: The Bayer matrix.
@@ -35,7 +34,7 @@ def I(n, transposed=False):
 
     Will only work if ``n`` is a power of 2.
 
-    Reference: http://caca.zoy.org/study/part2.html
+    Reference: http://caca.zoy.org/wiki/libcaca/study/2
 
     :param int n: Power of 2 side length of matrix.
     :param bool transposed:

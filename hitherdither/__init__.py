@@ -7,9 +7,9 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 
 from . import data
-from . import math
 from . import ordered
 from . import diffusion
 from . import palette
 from . import utils
+from . import random
 from .__version__ import __version__, version

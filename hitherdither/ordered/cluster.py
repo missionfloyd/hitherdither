@@ -16,31 +16,37 @@ from __future__ import absolute_import
 import numpy as np
 
 _CLUSTER_DOT_MATRICES = {
-    4: np.array([[12, 5, 6, 13], [4, 0, 1, 7], [11, 3, 2, 8], [15, 10, 9, 14]], "float")
-    / 16.0,
+    4: np.array(
+        [
+            [12,  5,  6, 13],
+            [ 4,  0,  1,  7],
+            [11,  3,  2,  8],
+            [15, 10,  9, 14]
+        ], "float") / 16.0,
     8: np.array(
         [
             [24, 10, 12, 26, 35, 47, 49, 37],
-            [8, 0, 2, 14, 45, 59, 61, 51],
-            [22, 6, 4, 16, 43, 57, 63, 53],
+            [ 8,  0,  2, 14, 45, 59, 61, 51],
+            [22,  6,  4, 16, 43, 57, 63, 53],
             [30, 20, 18, 28, 33, 41, 55, 39],
             [34, 46, 48, 36, 25, 11, 13, 27],
-            [44, 57, 60, 50, 9, 1, 3, 15],
-            [42, 56, 62, 52, 23, 7, 5, 17],
+            [44, 57, 60, 50,  9,  1,  3, 15],
+            [42, 56, 62, 52, 23,  7,  5, 17],
             [32, 40, 54, 38, 31, 21, 19, 29],
-        ],
-        "float",
-    )
-    / 64.0,
-    (5, 3): np.array([[9, 3, 0, 6, 12], [10, 4, 1, 7, 13], [11, 5, 2, 8, 14]], "float")
-    / 15.0,
+        ], "float") / 64.0,
+    (5, 3): np.array(
+        [
+            [9,  3, 0, 6, 12],
+            [10, 4, 1, 7, 13],
+            [11, 5, 2, 8, 14]
+        ], "float") / 15.0,
 }
 
 
 def cluster_dot_dithering(image, palette, thresholds, order=4):
     """Render the image using the ordered Bayer matrix dithering pattern.
 
-    Reference: http://caca.zoy.org/study/part2.html
+    Reference: http://caca.zoy.org/wiki/libcaca/study/2
 
     :param :class:`PIL.Image` image: The image to apply the
         ordered dithering to.
