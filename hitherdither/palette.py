@@ -189,8 +189,6 @@ class Palette(object):
 
         Avoids the PIL dithering in favour of our own.
 
-        Reference: http://stackoverflow.com/a/29438149
-
         :param :class:`numpy.ndarray` cc: A ``[M x N]`` array with integer
             values representing palette colour indices to build image from.
         :return: A :class:`PIL.Image.Image` image of mode ``P``.
@@ -205,8 +203,6 @@ class Palette(object):
         """Create a ``P`` PIL image from a RGB image with this palette.
 
         Avoids the PIL dithering in favour of our own.
-
-        Reference: http://stackoverflow.com/a/29438149
 
         :param :class:`numpy.ndarray` img_array: A ``[M x N x 3]`` uint8
             array representing RGB colours.
