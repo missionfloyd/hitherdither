@@ -11,5 +11,5 @@ from . import ordered
 from . import diffusion
 from . import palette
 from . import utils
-from . import random
+from . import noise
 from .__version__ import __version__, version
