@@ -15,6 +15,7 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 
 import numpy as np
+import time
 
 _DIFFUSION_MAPS = {
     "floyd-steinberg": (
@@ -227,6 +228,7 @@ def error_diffusion_dithering(image, palette, method="floyd-steinberg", order=2)
     width, height = image.size
     diff_map = _DIFFUSION_MAPS[method.lower()]
 
+    start = time.perf_counter()
     for y in range(height):
         for x in range(width):
             old_pixel = ni[y, x]
@@ -235,6 +237,9 @@ def error_diffusion_dithering(image, palette, method="floyd-steinberg", order=2)
             ni[y, x] = new_pixel
             for dx, dy, diffusion_coefficient in diff_map:
                 xn, yn = x + dx, y + dy
-                if (0 <= xn < width) and (0 <= yn < height):
+                try:
                     ni[yn, xn] += np.round(quantization_error * diffusion_coefficient)
+                except IndexError:
+                    pass
+    print(time.perf_counter() - start)
     return palette.create_PIL_png_from_rgb_array(ni)
